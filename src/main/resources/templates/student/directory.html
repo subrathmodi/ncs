@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Directory Lookup - NCS</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background: #f4f6f9; color: #333; }
+        .directory-container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 1200px; margin: 0 auto; }
+        h1 { color: #b32e2e; margin-top: 0; border-bottom: 2px solid #b32e2e; padding-bottom: 10px; }
+
+        /* Filter Bar Panel Layout */
+        .filter-bar { display: flex; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 6px; margin-bottom: 25px; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555; }
+        select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .btn-search { background: #b32e2e; color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.2s; padding: 10px 25px; }
+        .btn-search:hover { background: #912323; }
+
+        /* Data Table Records Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background-color: #b32e2e; color: white; font-weight: 600; }
+        tr:hover { background-color: #fcfcfc; }
+        .status-badge { background: #e8f8f0; color: #27ae60; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .no-data { text-align: center; color: #777; padding: 30px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="directory-container">
+    <h1>Nalanda Convent School - Student Directory Registry</h1>
+    <p style="color: #666; margin-bottom: 20px;">Query active and historical student profiles grouped by academic session and class tier clusters.</p>
+
+    <!-- Filter Dashboard Header Components -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label for="sessionFilter">Academic Session *</label>
+            <select id="sessionFilter">
+                <option value="1">2026-2027</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="classFilter">Class Tier *</label>
+            <select id="classFilter">
+                <option value="Nursery">Nursery</option>
+                <option value="LKG">LKG</option>
+                <option value="UKG">UKG</option>
+                <option value="Class 1">Class 1</option>
+                <option value="Class 2">Class 2</option>
+                <option value="Class 3">Class 3</option>
+                <option value="Class 4">Class 4</option>
+                <option value="Class 5">Class 5</option>
+                <option value="Class 6">Class 6</option>
+                <option value="Class 7">Class 7</option>
+                <option value="Class 8">Class 8</option>
+                <option value="Class 9">Class 9</option>
+            </select>
+        </div>
+        <button class="btn-search" onclick="loadClusterDirectory()">Fetch Directory</button>
+    </div>
+
+    <!-- Live Records Data Output Container Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Reg. No</th>
+            <th>Student Name</th>
+            <th>Father's Name</th>
+            <th>Contact No</th>
+            <th>Aadhar Number</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="directoryTableBody">
+        <tr>
+            <td colspan="7" class="no-data">Select filtration criteria and click 'Fetch Directory' to render systemic ledger files.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function loadClusterDirectory() {
+        const sessionId = document.getElementById('sessionFilter').value;
+        const currentClass = document.getElementById('classFilter').value;
+        const tbody = document.getElementById('directoryTableBody');
+
+        tbody.innerHTML = `<tr><td colspan="7" class="no-data">Loading synchronized records ledger data...</td></tr>`;
+
+        try {
+            const response = await fetch(`/api/students/directory?sessionId=${sessionId}&currentClass=${encodeURIComponent(currentClass)}`);
+
+            if (response.ok) {
+                const mappings = await response.json();
+
+                if (mappings.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="no-data">No student registration cluster found for the selected matching query.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = ""; // Clear table row area elements
+
+                // Sort by roll number if available
+                mappings.sort((a, b) => (a.rollNumber || 0) - (b.rollNumber || 0));
+
+                mappings.forEach(map => {
+                    const student = map.student;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:bold; color:#b32e2e;">${map.rollNumber || 'N/A'}</td>
+                            <td>${student.schoolRegNo}</td>
+                            <td style="font-weight:600;">${student.name}</td>
+                            <td>${student.fatherName}</td>
+                            <td>${student.fatherContactNo}</td>
+                            <td style="font-family: monospace;">${student.studentAadharNo}</td>
+                            <td><span class="status-badge">${student.currentStatus}</span></td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" class="no-data" style="color:red;">Failed to retrieve records index tracking files.</td></tr>`;
+            }
+        } catch (error) {
+            tbody.innerHTML = `<tr><td colspan="7" class="no-data" style="color:red;">Error parsing data stream configurations.</td></tr>`;
+        }
+    }
+</script>
+</body>
+</html>
+<!--NO USAGE-->

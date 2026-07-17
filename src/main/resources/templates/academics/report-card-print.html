@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Achievement Record - Nalanda Convent Sr.Sec. School</title>
+  <style>
+    :root { --primary-blue: #1e40af; --light-blue: #dbeafe; --accent-red: #b91c1c; --co-scholastic-purple: #581c87; --border-color: #4b5563; }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #f3f4f6; padding: 20px; display: flex; justify-content: center; }
+    .report-card { width: 210mm; min-height: 297mm; background-color: var(--light-blue); border: 3px solid var(--primary-blue); padding: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; }
+    .header { background-color: var(--primary-blue); color: white; text-align: center; padding: 15px; position: relative; border-radius: 4px; }
+    .header h1 { font-size: 24px; letter-spacing: 1px; margin-bottom: 5px; }
+    .school-codes { display: flex; justify-content: space-between; font-size: 10px; margin-top: 5px; font-weight: bold; }
+    .title-section { text-align: center; margin: 5px 0; }
+    .title-section h2 { color: var(--accent-red); font-size: 20px; }
+    .info-table { width: 100%; border-collapse: collapse; background: #f8fafc; }
+    .info-table td { border: 1px solid var(--border-color); padding: 8px; font-size: 12px; }
+    .info-label { font-weight: bold; color: #374151; display: block; }
+    .info-value { font-size: 13px; font-weight: 600; }
+    .records-container { display: grid; grid-template-columns: 55% 45%; border: 1px solid var(--border-color); background: white; }
+    table.record-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.record-table th, table.record-table td { border: 1px solid var(--border-color); padding: 6px 8px; height: 28px; }
+    table.record-table .scholastic-header { background-color: var(--primary-blue); color: white; text-align: center; }
+    table.record-table .coscholastic-header { background-color: var(--co-scholastic-purple); color: white; text-align: center; }
+    .line-fill { display: inline-block; border-bottom: 1px dotted #000; font-weight: bold; padding: 0 5px; }
+    .result-box { border: 2px solid #93c5fd; border-radius: 8px; padding: 15px; background-color: #eff6ff; font-size: 13px; line-height: 2; }
+    @media print { body { background-color: white; padding: 0; } .report-card { border: 3px solid var(--primary-blue); width: 100%; height: 100%; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
+  </style>
+</head>
+<body>
+<div class="report-card">
+  <div class="header" style="display: flex; align-items: center; justify-content: center; gap: 20px; position: relative;">
+<!--    <img src="/images/school-logo.png" alt="NCS Logo" style="height: 70px; width: 70px; background: white; border-radius: 50%; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>-->
+    <img src="/images/school-logo.png" alt="NCS Logo" style="height: 100px; width: 100px; background: transparent; border-radius: 50%; padding: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
+    <div style="flex-grow: 1; text-align: center;">
+      <div class="school-codes"><span>Dise Code : 23060329301</span><span>School Code : 162151</span></div>
+      <h1 th:text="${rc.schoolName}">NALANDA CONVENT SR.SEC. SCHOOL</h1>
+      <p>Village Sumela Badarwas Dist. Shivpuri (M.P.)</p>
+    </div>
+  </div>
+
+  <div class="title-section">
+    <h2>ACHIEVEMENT-RECORD</h2>
+    <p>Session: <span class="line-fill" th:text="${rc.sessionName}">2026-2027</span></p>
+  </div>
+
+  <table class="info-table">
+    <tr>
+      <td rowspan="2" style="width:15%; text-align:center;">
+        <img th:if="${rc.photoPath}" th:src="${rc.photoPath}" style="max-height:80px; max-width:80px; border-radius:4px;"/>
+        <span th:unless="${rc.photoPath}" style="color:#aaa;">[ Photo ]</span>
+      </td>
+      <td><span class="info-label">Name</span><span class="info-value" th:text="${rc.studentName}"></span></td>
+      <td><span class="info-label">Father's Name</span><span class="info-value" th:text="${rc.fatherName}"></span></td>
+      <td><span class="info-label">Roll No.</span><span class="info-value" th:text="${rc.rollNo}"></span></td>
+    </tr>
+    <tr>
+      <td><span class="info-label">Class</span><span class="info-value" th:text="${rc.className}"></span></td>
+      <td><span class="info-label">Date of Birth</span><span class="info-value" th:text="${rc.dateOfBirth}"></span></td>
+      <td><span class="info-label">Mother's Name</span><span class="info-value" th:text="${rc.motherName}"></span></td>
+    </tr>
+  </table>
+
+  <div class="records-container">
+    <table class="record-table" style="border-right:1px solid var(--border-color);">
+      <thead>
+      <tr><th colspan="4" class="scholastic-header">SCHOLASTIC-RECORD</th></tr>
+      <tr style="background:#b91c1c; color:white; text-align:center;">
+        <th>Subject</th><th>Quat.</th><th>Half.</th><th>Annual</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="s : ${rc.scholasticRecords}">
+        <td th:text="${s.subjectName}"></td>
+        <td th:text="${s.quarterlyMarks}"></td>
+        <td th:text="${s.halfYearlyMarks}"></td>
+        <td th:text="${s.annualMarks}"></td>
+      </tr>
+      <tr style="font-weight:bold; background:#f8fafc;">
+        <td>Grand Total</td><td colspan="3" th:text="${rc.grandTotal}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="record-table">
+      <thead>
+      <tr><th colspan="2" class="coscholastic-header">CO-SCHOLASTIC RECORD</th></tr>
+      <tr style="background:#581c87; color:white;"><th>Metric Area</th><th>Grade</th></tr>
+      </thead>
+      <tbody>
+      <tr th:each="c : ${rc.coScholasticRecords}">
+        <td th:text="${c.subjectName}"></td>
+        <td style="font-weight:bold; text-align:center;" th:text="${c.coScholasticGrade}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="result-box">
+    <div style="text-align:center; color:var(--accent-red); font-weight:bold;">RESULT</div>
+    This is to certify that Master / Ms. <span class="line-fill" th:text="${rc.studentName}"></span>
+    S/o / D/o Mr. <span class="line-fill" th:text="${rc.fatherName}"></span> appeared in evaluations
+    with dynamic aggregate percentage <span class="line-fill" th:text="${rc.finalPercentage} + '%'"></span>
+    and final passing grade metric value <span class="line-fill" th:text="${rc.finalGrade}"></span>.
+    Final Status: <span class="line-fill" th:text="${rc.promotionStatusText}"></span>.
+  </div>
+
+  <div class="signature-section" style="display:flex; justify-content:space-between; margin-top:auto; font-size:12px;">
+    <div><strong>Signature Class Teacher</strong></div>
+    <div style="text-align:center; color:var(--primary-blue); font-weight:bold;">PRINCIPAL<br><span style="font-size:10px; color:#555;">Nalanda Convent Sr.Sec. School</span></div>
+  </div>
+</div>
+</body>
+</html>

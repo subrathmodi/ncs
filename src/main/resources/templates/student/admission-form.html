@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Admission Form - NCS</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background: #f4f6f9; color: #333; }
+        .form-container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 1000px; margin: 0 auto; }
+        h1 { color: #b32e2e; margin-top: 0; border-bottom: 2px solid #b32e2e; padding-bottom: 10px; }
+        h3 { color: #2c3e50; border-left: 4px solid #b32e2e; padding-left: 10px; margin-top: 25px; margin-bottom: 15px; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 13fr); gap: 20px; margin-bottom: 15px; }
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group.full-width { grid-column: span 3; }
+        @media (max-width: 768px) { .input-group.full-width { grid-column: span 1; } }
+        label { font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #555; }
+        input, select, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box; width: 100%; }
+        input:focus, select:focus, textarea:focus { border-color: #b32e2e; outline: none; }
+        .btn-submit { background: #b32e2e; color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.2s; margin-top: 20px; float: right; }
+        .btn-submit:hover { background: #912323; }
+        .alert { padding: 12px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; display: none; }
+        .alert-error { background: #fde8e8; color: #e74c3c; border-left: 4px solid #e74c3c; }
+        .alert-success { background: #e8f8f0; color: #27ae60; border-left: 4px solid #27ae60; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Nalanda Convent School - Student Admission Form</h1>
+    <p style="color: #666; margin-bottom: 25px;">Fill out all required fields to register a student record inside the management engine portal.</p>
+
+    <div id="errorAlert" class="alert alert-error"></div>
+    <div id="successAlert" class="alert alert-success"></div>
+
+    <form id="admissionForm">
+        <h3>📌 Office Registration & Academic Session</h3>
+        <div class="form-grid">
+            <div class="input-group">
+                <label for="sessionId">Academic Session *</label>
+                <select id="sessionId" required>
+                    <option value="1">2026-2027</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="schoolRegNo">School Reg. No. *</label>
+                <input type="text" id="schoolRegNo" placeholder="e.g. NCS/2026/1042" required>
+            </div>
+            <div class="input-group">
+                <label for="dateOfAdmission">Date of Admission *</label>
+                <input type="date" id="dateOfAdmission" required>
+            </div>
+            <div class="input-group">
+                <label for="admissionType">Admission Type *</label>
+                <select id="admissionType" required>
+                    <option value="NEW">NEW</option>
+                    <option value="RENEWAL">RENEWAL</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="classOfAdmission">Class of Admission *</label>
+                <select id="classOfAdmission" required>
+                    <option value="Nursery">Nursery</option>
+                    <option value="LKG">LKG</option>
+                    <option value="UKG">UKG</option>
+                    <option value="Class 1">Class 1</option>
+                    <option value="Class 2">Class 2</option>
+                    <option value="Class 3">Class 3</option>
+                    <option value="Class 4">Class 4</option>
+                    <option value="Class 5">Class 5</option>
+                    <option value="Class 6">Class 6</option>
+                    <option value="Class 7">Class 7</option>
+                    <option value="Class 8">Class 8</option>
+                    <option value="Class 9">Class 9</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="medium">Medium</label>
+                <select id="medium">
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="stream">Stream (Higher Secondary Only)</label>
+                <select id="stream">
+                    <option value="">None / General</option>
+                    <option value="Science">Science</option>
+                    <option value="Commerce">Commerce</option>
+                    <option value="Arts">Arts</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="rollNumber">Assigned Roll Number</label>
+                <input type="number" id="rollNumber" placeholder="e.g. 101">
+            </div>
+            <div class="input-group">
+                <label for="admissionScheme">Admission Scheme</label>
+                <input type="text" id="admissionScheme" placeholder="e.g. RTE, Scholarship">
+            </div>
+        </div>
+
+        <h3>👤 Student Personal Profiles</h3>
+        <div class="form-grid">
+            <div class="input-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" placeholder="Student's complete name" required>
+            </div>
+            <div class="input-group">
+                <label for="dateOfBirth">Date of Birth *</label>
+                <input type="date" id="dateOfBirth" required>
+            </div>
+            <div class="input-group">
+                <label for="gender">Gender *</label>
+                <select id="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="fatherName">Father's Name *</label>
+                <input type="text" id="fatherName" placeholder="Father's full name" required>
+            </div>
+            <div class="input-group">
+                <label for="motherName">Mother's Name *</label>
+                <input type="text" id="motherName" placeholder="Mother's full name" required>
+            </div>
+            <div class="input-group">
+                <label for="fatherContactNo">Father's Contact No *</label>
+                <input type="tel" id="fatherContactNo" placeholder="10-digit primary number" required pattern="[0-9]{10,15}">
+            </div>
+            <div class="input-group">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="General">General</option>
+                    <option value="OBC">OBC</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="religion">Religion</label>
+                <input type="text" id="religion" placeholder="e.g. Hindu, Sikh, Muslim">
+            </div>
+            <div class="input-group full-width">
+                <label for="fullAddress">Full Residential Address *</label>
+                <textarea id="fullAddress" rows="2" placeholder="Enter complete home address tracking records" required></textarea>
+            </div>
+        </div>
+
+        <h3>🛡️ Government System Registry Identifiers</h3>
+        <div class="form-grid">
+            <div class="input-group">
+                <label for="studentAadharNo">Student Aadhar No (12 Digits) *</label>
+                <input type="text" id="studentAadharNo" placeholder="12 digit standard format" required pattern="[0-9]{12}">
+            </div>
+            <div class="input-group">
+                <label for="studentSssmidNo">Student SSSMID No</label>
+                <input type="text" id="studentSssmidNo" placeholder="9 digit configuration identifier">
+            </div>
+            <div class="input-group">
+                <label for="childIdNo">Child ID No</label>
+                <input type="text" id="childIdNo" placeholder="Child tracking baseline id">
+            </div>
+            <div class="input-group">
+                <label for="familyIdNo">Family ID No</label>
+                <input type="text" id="familyIdNo" placeholder="Family structural grouping id">
+            </div>
+            <div class="input-group">
+                <label for="penNo">PEN No (Permanent Education Number)</label>
+                <input type="text" id="penNo" placeholder="National PEN Registry value">
+            </div>
+            <div class="input-group">
+                <label for="apaarIdNo">APAAR ID No</label>
+                <input type="text" id="apaarIdNo" placeholder="Automated Permanent Academic Account Registry">
+            </div>
+        </div>
+
+        <h3>🏦 Financial / Bank Account Parameters</h3>
+        <div class="form-grid">
+            <div class="input-group">
+                <label for="nameOfBank">Name of Bank</label>
+                <input type="text" id="nameOfBank" placeholder="e.g. State Bank of India">
+            </div>
+            <div class="input-group">
+                <label for="bankAccountNo">Bank Account Number</label>
+                <input type="text" id="bankAccountNo" placeholder="Recipient distribution routing value">
+            </div>
+            <div class="input-group">
+                <label for="ifscCode">Bank IFSC Code</label>
+                <input type="text" id="ifscCode" placeholder="e.g. SBIN0001234">
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Register Admission</button>
+    </form>
+</div>
+
+<script>
+    // Set default modern date values on initial form load parameters
+    document.getElementById('dateOfAdmission').valueAsDate = new Date();
+
+    document.getElementById('admissionForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+
+        // Clear old visual state traces
+        errorAlert.style.display = 'none';
+        successAlert.style.display = 'none';
+
+        // Extract input values to compile the JSON structural mapping request payload
+        const payload = {
+            sessionId: parseInt(document.getElementById('sessionId').value),
+            schoolRegNo: document.getElementById('schoolRegNo').value,
+            dateOfAdmission: document.getElementById('dateOfAdmission').value,
+            admissionType: document.getElementById('admissionType').value,
+            admissionScheme: document.getElementById('admissionScheme').value,
+            name: document.getElementById('name').value,
+            fatherName: document.getElementById('fatherName').value,
+            motherName: document.getElementById('motherName').value,
+            dateOfBirth: document.getElementById('dateOfBirth').value,
+            gender: document.getElementById('gender').value,
+            religion: document.getElementById('religion').value,
+            category: document.getElementById('category').value,
+            fatherContactNo: document.getElementById('fatherContactNo').value,
+            fullAddress: document.getElementById('fullAddress').value,
+            classOfAdmission: document.getElementById('classOfAdmission').value,
+            medium: document.getElementById('medium').value,
+            stream: document.getElementById('stream').value,
+            rollNumber: document.getElementById('rollNumber').value ? parseInt(document.getElementById('rollNumber').value) : null,
+            childIdNo: document.getElementById('childIdNo').value,
+            familyIdNo: document.getElementById('familyIdNo').value,
+            studentAadharNo: document.getElementById('studentAadharNo').value,
+            studentSssmidNo: document.getElementById('studentSssmidNo').value,
+            penNo: document.getElementById('penNo').value,
+            apaarIdNo: document.getElementById('apaarIdNo').value,
+            bankAccountNo: document.getElementById('bankAccountNo').value,
+            ifscCode: document.getElementById('ifscCode').value,
+            nameOfBank: document.getElementById('nameOfBank').value
+        };
+
+        try {
+            const response = await fetch('/api/students/admission', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                successAlert.textContent = `Admission successfully processed! Assigned System Student ID No: ${data.admissionNumber}`;
+                successAlert.style.display = 'block';
+                document.getElementById('admissionForm').reset();
+                document.getElementById('dateOfAdmission').valueAsDate = new Date();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                errorAlert.textContent = data.error || 'The system could not parse validation parameters.';
+                errorAlert.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } catch (error) {
+            errorAlert.textContent = 'Server network synchronization drop. Verify Postgres configuration profiles.';
+            errorAlert.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+</script>
+</body>
+</html>

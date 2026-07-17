@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Student Exit TC - NCS</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background: #f4f6f9; color: #333; }
+        .workspace-container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 900px; margin: 0 auto; }
+        h1 { color: #b32e2e; margin-top: 0; padding-bottom: 10px; border-bottom: 2px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+
+        .btn-home { background: #2c3e50; color: white; text-decoration: none; padding: 10px 18px; border-radius: 4px; font-size: 14px; font-weight: bold; }
+        .btn-action { background: #b32e2e; color: white; border: none; padding: 12px 30px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .btn-action:hover { background: #912323; }
+        .btn-print-action { background: #27ae60; color: white; text-decoration: none; padding: 12px 30px; font-size: 14px; font-weight: bold; border-radius: 4px; display: inline-block; margin-left: 10px; }
+
+        /* Profile Banner Visual Blocks */
+        .student-summary-card { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 20px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .summary-item { font-size: 14px; }
+        .summary-label { font-weight: 600; color: #1e3a8a; display: block; margin-bottom: 2px; }
+        .summary-val { font-weight: bold; color: #333; }
+
+        /* Input Management Layout Components */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group.full-width { grid-column: span 2; }
+        label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #4b5563; }
+        input, select, textarea { padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        input:focus, select:focus, textarea:focus { border-color: #b32e2e; outline: none; background: #fffdf9; }
+
+        .alert { padding: 12px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; display: none; }
+        .alert-error { background: #fde8e8; color: #e74c3c; border-left: 4px solid #e74c3c; }
+        .alert-success { background: #e8f8f0; color: #27ae60; border-left: 4px solid #27ae60; }
+    </style>
+</head>
+<body>
+
+<div class="workspace-container">
+    <h1>
+        <span>Withdrawal Gatekeeper - Issue Transfer Certificate</span>
+        <a href="/dashboard" class="btn-home">🏠 Dashboard</a>
+    </h1>
+
+    <div id="errorMsgBox" class="alert alert-error"></div>
+    <div id="successMsgBox" class="alert alert-success"></div>
+
+    <!-- Student Master Profile Reference Card -->
+    <div class="student-summary-card">
+        <div class="summary-item">
+            <span class="summary-label">Student Full Name</span>
+            <span class="summary-val" th:text="${student.name}"></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Father's Name</span>
+            <span class="summary-val" th:text="${student.fatherName}"></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Admission Registration No.</span>
+            <span class="summary-val" th:text="${student.schoolRegNo}"></span> </div>
+        <div class="summary-item">
+            <span class="summary-label">Child ID (Scholar Record)</span>
+            <span class="summary-val" th:text="${student.childIdNo != null ? student.childIdNo : 'N/A'}"></span> </div>
+        <div class="summary-item">
+            <span class="summary-label">Date of Admission</span>
+            <span class="summary-val" th:text="${#temporals.format(student.dateOfAdmission, 'dd/MM/yyyy')}"></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Current Status Stage</span>
+            <span class="summary-val" style="color: #b91c1c;" th:text="${student.currentStatus}"></span>
+        </div>
+    </div>
+
+    <!-- Operational TC Issuance Form -->
+    <form id="tcIssuanceForm">
+        <!-- Hidden input tracking internal key references securely -->
+        <input type="hidden" id="studentId" th:value="${student.studentId}">
+
+        <div class="form-grid">
+            <div class="input-group">
+                <label for="studentReligion">Student Religion *</label>
+                <select id="studentReligion">
+                    <option value="HINDU">Hinduism</option>
+                    <option value="ISLAM">Islam</option>
+                    <option value="SIKH">Sikhism</option>
+                    <option value="CHRISTIAN">Christianity</option>
+                    <option value="JAIN">Jainism</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="studentCategory">Social Category Class *</label>
+                <select id="studentCategory">
+                    <option value="General">General (UR)</option>
+                    <option value="OBC">OBC (Other Backward Classes)</option>
+                    <option value="SC">SC (Scheduled Caste)</option>
+                    <option value="ST">ST (Scheduled Tribe)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="lastExaminationResult">School/Board Annual Exam Taken with Result *</label>
+                <input type="text" id="lastExaminationResult" placeholder="e.g., Passed Class VI Exam during term grid" required>
+            </div>
+            <div class="input-group">
+                <label for="studentBehavior">General Student Conduct Behavior *</label>
+                <select id="studentBehavior">
+                    <option value="GOOD">Good</option>
+                    <option value="EXEMPLARY">Exemplary</option>
+                    <option value="SATISFACTORY">Satisfactory</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="promotedToClassFig">Promotion Class (In Figures) *</label>
+                <input type="text" id="promotedToClassFig" placeholder="e.g., Class 7" required>
+            </div>
+            <div class="input-group">
+                <label for="promotedToClassWords">Promotion Class (In Words) *</label>
+                <input type="text" id="promotedToClassWords" placeholder="e.g., Class Seventh" required>
+            </div>
+            <div class="input-group full-width">
+                <label for="subjectsStudied">Compulsory Subjects Studied *</label>
+                <input type="text" id="subjectsStudied" value="ENGLISH, HINDI, SCIENCE, MATHS, SOCIAL SCIENCE, SANSKRIT" required>
+            </div>
+            <div class="input-group full-width">
+                <label for="reasonForLeaving">Explicit Reason for Leaving School *</label>
+                <textarea id="reasonForLeaving" rows="2" placeholder="e.g., Parent Relocation / Higher Studies exit requirements" required></textarea>
+            </div>
+            <div class="input-group">
+                <label for="dateOfIssue">Document Issue Date *</label>
+                <input type="date" id="dateOfIssue" required>
+            </div>
+        </div>
+
+        <div style="text-align: right; border-top: 1px solid #ddd; padding-top: 20px;">
+            <button type="submit" class="btn-action" id="btnSubmit">🔒 Compile Certificate & Archive</button>
+            <a id="btnPrintLink" href="#" target="_blank" class="btn-print-action" style="display: none;">🖨️ Open Print Document Sheet</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Default document calendar fields setup to active processing date parameters
+        document.getElementById('dateOfIssue').valueAsDate = new Date();
+    });
+
+    document.getElementById("tcIssuanceForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const payload = {
+            studentId: parseInt(document.getElementById("studentId").value),
+            studentReligion: document.getElementById("studentReligion").value,
+            category: document.getElementById("studentCategory").value,
+            lastExaminationResult: document.getElementById("lastExaminationResult").value,
+            subjectsStudied: document.getElementById("subjectsStudied").value,
+            promotedToClassFig: document.getElementById("promotedToClassFig").value,
+            promotedToClassWords: document.getElementById("promotedToClassWords").value,
+            studentBehavior: document.getElementById("studentBehavior").value,
+            reasonForLeaving: document.getElementById("reasonForLeaving").value,
+            dateOfIssue: document.getElementById("dateOfIssue").value
+        };
+
+        try {
+            const res = await fetch("/api/academics/tc/issue", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            const errBox = document.getElementById("errorMsgBox");
+            const succBox = document.getElementById("successMsgBox");
+            errBox.style.display = "none"; succBox.style.display = "none";
+
+            if (res.ok) {
+                succBox.textContent = data.message; succBox.style.display = "block";
+
+                // Expose the print anchor linking out to the custom text sheet layout
+                const printBtn = document.getElementById("btnPrintLink");
+                printBtn.href = `/dashboard/academics/tc/print/${data.tcId}`;
+                printBtn.style.display = "inline-block";
+
+                // Disable form components to lock the completed transaction state
+                document.getElementById("btnSubmit").style.display = "none";
+                document.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
+            } else {
+                errBox.textContent = data.error || "Failed checkpoint processing bounds."; errBox.style.display = "block";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) { console.error("Error committing withdrawal channels.", err); }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - NCS</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background: #f4f6f9; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #b32e2e; }
+        .nav-links a { display: inline-block; margin-right: 15px; color: #2980b9; text-decoration: none; font-weight: bold; cursor: pointer; }
+
+        /* Stats Dashboard Panel Placeholder */
+        .dashboard-home { margin-top: 25px; padding: 20px; background: #fdfefe; border-radius: 6px; }
+        .stats-grid { display: flex; gap: 20px; margin-top: 15px; }
+        .stat-card { flex: 1; padding: 20px; background: #eef2f7; border-left: 5px solid #b32e2e; border-radius: 4px; }
+        .stat-card h3 { margin: 0 0 5px 0; color: #555; }
+        .stat-card p { margin: 0; font-size: 24px; font-weight: bold; color: #333; }
+
+        /* Management Layout styles */
+        .management-section { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; display: none; }
+        .form-inline { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-add { background: #27ae60; color: white; }
+        .btn-del { background: #c0392b; color: white; }
+        .btn-pass { background: #f39c12; color: white; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #b32e2e; color: white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Nalanda Convent - Admin Portal</h1>
+    <p>Welcome, Authorized Administrator.</p>
+    <hr>
+    <div class="nav-links">
+        <a onclick="showOperatorConsole()">⚙️ Operator Management</a>
+        <a onclick="showDashboardHome()">🏠 Home Dashboard</a>
+<!--        <a href="/dashboard/student/admission">🎓 Admissions</a>-->
+<!--        <a href="/dashboard/student/directory">📁 Student Directory</a>-->
+        <a href="/dashboard/students">👥 Students</a>
+        <a href="/dashboard/academics">📆 Academics Core Console</a>
+        <a href="/dashboard/evaluation">📝 Scholastic Evaluation Entry</a>
+<!--        <a href="#">📝 Examinations</a>-->
+<!--        <a href="#">📄 Transfer Certificates</a>-->
+        <a href="/logout" style="color: #e74c3c;">Logout</a>
+    </div>
+
+    <div id="dashboardHomePanel" class="dashboard-home">
+        <h2>System Summary Metrics</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+<!--                <h3>Total Enrolled Students</h3>-->
+<!--                <p>-&#45;&#45;</p>-->
+                <h3>Total Active Enrolled</h3>
+                <div id="metricTotalStudents" style="font-size: 28px; font-weight: bold; color: #b32e2e;">--</div>
+            </div>
+            <div class="stat-card">
+<!--                <h3>Recent Admissions (Current Month)</h3>-->
+<!--                <p>-&#45;&#45;</p>-->
+                <h3>Admissions This Month</h3>
+                <div id="metricRecentAdmissions" style="font-size: 28px; font-weight: bold; color: #2c3e50;">--</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="management-section" id="operatorConsole">
+        <h2>System Operator Records Management</h2>
+
+        <h3>➕ Provision New Operator</h3>
+        <div class="form-inline">
+            <input type="text" id="newUsername" placeholder="Operator Username" required>
+            <input type="password" id="newPassword" placeholder="Initial Password" required>
+            <button class="btn-add" onclick="createOperator()">Create Operator</button>
+        </div>
+        <p id="feedbackMessage" style="font-weight:bold;"></p>
+
+        <h3>📋 Active System Operator Access</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Password (Plain Text)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="operatorTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Navigation routing triggers
+    function showOperatorConsole() {
+        document.getElementById("dashboardHomePanel").style.display = "none";
+        document.getElementById("operatorConsole").style.display = "block";
+        fetchOperators();
+    }
+
+    function showDashboardHome() {
+        document.getElementById("operatorConsole").style.display = "none";
+        document.getElementById("dashboardHomePanel").style.display = "block";
+    }
+
+    async function fetchOperators() {
+        const res = await fetch('/api/admin/operators');
+        if (res.ok) {
+            const operators = await res.json();
+            const tbody = document.getElementById("operatorTableBody");
+            tbody.innerHTML = "";
+
+            operators.forEach(op => {
+                // Render plain-text password variant securely saved to admin dashboard view
+                const displayPassword = op.plainTextPassword ? op.plainTextPassword : '• • • • • •';
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${op.id}</td>
+                        <td>${op.username}</td>
+                        <td style="font-family: monospace; font-size: 15px; color:#2c3e50; font-weight:bold;">${displayPassword}</td>
+                        <td>
+                            <button class="btn-pass" onclick="modifyPassword(${op.id})">Reset Pass</button>
+                            <button class="btn-del" onclick="removeOperator(${op.id})">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+    }
+
+    async function createOperator() {
+        const username = document.getElementById("newUsername").value;
+        const password = document.getElementById("newPassword").value;
+        const feedback = document.getElementById("feedbackMessage");
+
+        if(!username || !password) return alert("Please fill out all fields.");
+
+        const res = await fetch('/api/admin/operators', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if(res.ok) {
+            feedback.style.color = "green";
+            feedback.textContent = data.message;
+            document.getElementById("newUsername").value = "";
+            document.getElementById("newPassword").value = "";
+            fetchOperators();
+        } else {
+            feedback.style.color = "red";
+            feedback.textContent = data.error || "Execution failed.";
+        }
+    }
+
+    async function modifyPassword(id) {
+        const newPassword = prompt("Type the updated password for this operator account:");
+        if (newPassword == null || newPassword.trim() === "") return; // Fix empty input cancel logic
+
+        const res = await fetch(`/api/admin/operators/${id}/change-password`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: newPassword.trim() }) // Corrected transmission payload
+        });
+
+        const data = await res.json();
+        alert(data.message || data.error);
+        fetchOperators(); // Re-render table data parameters
+    }
+
+    async function removeOperator(id) {
+        if(!confirm("Are you absolutely sure you want to delete this operator profile permanently?")) return;
+
+        const res = await fetch(`/api/admin/operators/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+
+        alert(data.message || data.error);
+        fetchOperators();
+    }
+    async function refreshDashboardMetrics() {
+        try {
+            const res = await fetch('/dashboard/metrics');
+            if (res.ok) {
+                const data = await res.json();
+
+                // Inject the returned query counts smoothly into the layout fields
+                document.getElementById('metricTotalStudents').textContent = data.totalEnrolled ?? 0;
+                document.getElementById('metricRecentAdmissions').textContent = data.recentAdmissions ?? 0;
+            }
+        } catch (err) {
+            console.error("Dashboard metric visualization dropped:", err);
+        }
+    }
+
+    // Run automatically when the window session loads onto the browser framework
+    document.addEventListener("DOMContentLoaded", refreshDashboardMetrics);
+</script>
+</body>
+</html>
