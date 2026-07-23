@@ -37,6 +37,7 @@ public class MarksheetService {
         rc.setRollNo(map.getRollNumber() != null ? map.getRollNumber().toString() : "N/A");
         rc.setDateOfBirth(map.getStudent().getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         rc.setPhotoPath(map.getStudent().getPhotoFilePath());
+        rc.setGender(map.getStudent().getGender());
 
         // Pull active curriculum mapping rules to check for "N/A" layout constraints
         List<CurriculumMapping> activeCurriculum = curriculumRepository

@@ -44,11 +44,14 @@ public class SecurityConfig {
                         // 4. Academic & Administrative UI Page Modules
                         .requestMatchers("/dashboard", "/dashboard/").hasAnyRole("ADMIN", "OPERATOR")
                         .requestMatchers("/dashboard/academics/**").hasAnyRole("ADMIN", "OPERATOR")
-
+//                        .requestMatchers("/dashboard/academics/tc/**").hasAnyRole("ADMIN", "OPERATOR")
+//                        .requestMatchers("/dashboard/academics/marksheet/**").hasAnyRole("ADMIN", "OPERATOR")
                         // 5. Secure REST API Data Delivery Channels
                         .requestMatchers("/api/academics/**").hasAnyRole("ADMIN", "OPERATOR")
                         .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "OPERATOR")
                         .requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "OPERATOR")
+//                        .requestMatchers("/api/dashboard/tc/**").hasAnyRole("ADMIN", "OPERATOR")
+//                        .requestMatchers("/api/dashboard/marksheet/**").hasAnyRole("ADMIN", "OPERATOR")
 
                         // 6. Global fallback access rules for authenticated users
                         .requestMatchers("/logout").authenticated()

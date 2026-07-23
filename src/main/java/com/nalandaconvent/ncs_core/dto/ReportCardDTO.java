@@ -11,6 +11,7 @@ public class ReportCardDTO {
 
     // Student Information Profile Core
     private String studentName;
+    private String gender;
     private String fatherName;
     private String motherName;
     private String className;

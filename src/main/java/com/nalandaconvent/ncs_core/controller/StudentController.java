@@ -78,6 +78,9 @@ public class StudentController {
 
             // 4. Extract and bind the residential tracking parameters
             student.setFullAddress((String) payload.get("fullAddress"));
+            student.setBankAccountNo((String) payload.get("bankAccountNo"));
+            student.setIfscCode((String) payload.get("ifscCode"));
+            student.setNameOfBank((String) payload.get("nameOfBank"));
 
             // 5. Commit changes back to PostgreSQL
             studentRepository.save(student);
