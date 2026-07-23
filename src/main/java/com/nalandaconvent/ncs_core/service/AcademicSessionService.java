@@ -159,12 +159,13 @@ public class AcademicSessionService {
         List<String> classLadder = List.of(
                 "Nursery", "LKG", "UKG",
                 "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
-                "Class 6", "Class 7", "Class 8", "Class 9"
+                "Class 6", "Class 7", "Class 8", "Class 9" ,"Class 10",
+                "Class 11" ,"Class 12"
         );
 
         int currentIndex = classLadder.indexOf(currentClass.trim());
 
-        // If the class name isn't recognized or they graduated from the highest tier (Class 9), halt progression
+        // If the class name isn't recognized, or they graduated from the highest tier (Class 9), halt progression
         if (currentIndex == -1 || currentIndex == classLadder.size() - 1) {
             return currentClass;
         }

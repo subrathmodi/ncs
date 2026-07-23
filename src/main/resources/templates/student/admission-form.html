@@ -9,7 +9,7 @@
         .form-container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 1000px; margin: 0 auto; }
         h1 { color: #b32e2e; margin-top: 0; border-bottom: 2px solid #b32e2e; padding-bottom: 10px; }
         h3 { color: #2c3e50; border-left: 4px solid #b32e2e; padding-left: 10px; margin-top: 25px; margin-bottom: 15px; }
-        .form-grid { display: grid; grid-template-columns: repeat(3, 13fr); gap: 20px; margin-bottom: 15px; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 15px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
         .input-group { display: flex; flex-direction: column; }
         .input-group.full-width { grid-column: span 3; }
@@ -43,10 +43,6 @@
                 </select>
             </div>
             <div class="input-group">
-                <label for="schoolRegNo">School Reg. No. *</label>
-                <input type="text" id="schoolRegNo" placeholder="e.g. NCS/2026/1042" required>
-            </div>
-            <div class="input-group">
                 <label for="dateOfAdmission">Date of Admission *</label>
                 <input type="date" id="dateOfAdmission" required>
             </div>
@@ -72,6 +68,9 @@
                     <option value="Class 7">Class 7</option>
                     <option value="Class 8">Class 8</option>
                     <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
                 </select>
             </div>
             <div class="input-group">
@@ -128,7 +127,7 @@
             </div>
             <div class="input-group">
                 <label for="fatherContactNo">Father's Contact No *</label>
-                <input type="tel" id="fatherContactNo" placeholder="10-digit primary number" required pattern="[0-9]{10,15}">
+                <input type="tel" id="fatherContactNo" placeholder="10-digit primary number" required pattern="[0-9]{10,15}" title="Enter a valid contact number (10-15 digits)">
             </div>
             <div class="input-group">
                 <label for="category">Category</label>
@@ -153,43 +152,43 @@
         <div class="form-grid">
             <div class="input-group">
                 <label for="studentAadharNo">Student Aadhar No (12 Digits) *</label>
-                <input type="text" id="studentAadharNo" placeholder="12 digit standard format" required pattern="[0-9]{12}">
+                <input type="text" id="studentAadharNo" placeholder="12 digit standard format" required pattern="[0-9]{12}" title="Aadhaar Number must be exactly 12 digits">
             </div>
             <div class="input-group">
-                <label for="studentSssmidNo">Student SSSMID No</label>
-                <input type="text" id="studentSssmidNo" placeholder="9 digit configuration identifier">
+                <label for="studentSssmidNo">Student SSSMID No (9 Digits) *</label>
+                <input type="text" id="studentSssmidNo" placeholder="9 digit SSMID number" required pattern="[0-9]{9}" title="SSSMID must be exactly 9 digits">
             </div>
             <div class="input-group">
-                <label for="childIdNo">Child ID No</label>
-                <input type="text" id="childIdNo" placeholder="Child tracking baseline id">
+                <label for="childIdNo">Child ID No (9 Digits) *</label>
+                <input type="text" id="childIdNo" placeholder="9 digit child ID" required pattern="[0-9]{9}" title="Child ID must be exactly 9 digits">
             </div>
             <div class="input-group">
-                <label for="familyIdNo">Family ID No</label>
-                <input type="text" id="familyIdNo" placeholder="Family structural grouping id">
+                <label for="familyIdNo">Family ID No (8 Digits) *</label>
+                <input type="text" id="familyIdNo" placeholder="8 digit family ID" required pattern="[0-9]{8}" title="Family ID must be exactly 8 digits">
             </div>
             <div class="input-group">
-                <label for="penNo">PEN No (Permanent Education Number)</label>
-                <input type="text" id="penNo" placeholder="National PEN Registry value">
+                <label for="penNo">PEN No (11 Alphanumeric) *</label>
+                <input type="text" id="penNo" placeholder="11 character PEN Registry value" required pattern="[A-Za-z0-9]{11}" title="PEN must be an 11-character alphanumeric code">
             </div>
             <div class="input-group">
-                <label for="apaarIdNo">APAAR ID No</label>
-                <input type="text" id="apaarIdNo" placeholder="Automated Permanent Academic Account Registry">
+                <label for="apaarIdNo">APAAR ID No (12 Digits) *</label>
+                <input type="text" id="apaarIdNo" placeholder="12 digit APAAR ID" required pattern="[0-9]{12}" title="APAAR ID must be exactly 12 digits">
             </div>
         </div>
 
         <h3>🏦 Financial / Bank Account Parameters</h3>
         <div class="form-grid">
             <div class="input-group">
-                <label for="nameOfBank">Name of Bank</label>
-                <input type="text" id="nameOfBank" placeholder="e.g. State Bank of India">
+                <label for="nameOfBank">Name of Bank *</label>
+                <input type="text" id="nameOfBank" placeholder="e.g. State Bank of India" required>
             </div>
             <div class="input-group">
-                <label for="bankAccountNo">Bank Account Number</label>
-                <input type="text" id="bankAccountNo" placeholder="Recipient distribution routing value">
+                <label for="bankAccountNo">Bank Account Number *</label>
+                <input type="text" id="bankAccountNo" placeholder="9-18 digit account number" required pattern="[0-9]{9,18}" title="Account number must be between 9 and 18 digits">
             </div>
             <div class="input-group">
-                <label for="ifscCode">Bank IFSC Code</label>
-                <input type="text" id="ifscCode" placeholder="e.g. SBIN0001234">
+                <label for="ifscCode">Bank IFSC Code *</label>
+                <input type="text" id="ifscCode" placeholder="e.g. SBIN0001234" required pattern="^[A-Za-z]{4}0[A-Za-z0-9]{6}$" title="Enter a valid 11-character IFSC Code (e.g., SBIN0001234)" style="text-transform: uppercase;">
             </div>
         </div>
 
@@ -211,10 +210,13 @@
         errorAlert.style.display = 'none';
         successAlert.style.display = 'none';
 
+        // Uppercase IFSC code automatically before sending
+        const ifscInput = document.getElementById('ifscCode');
+        ifscInput.value = ifscInput.value.toUpperCase();
+
         // Extract input values to compile the JSON structural mapping request payload
         const payload = {
             sessionId: parseInt(document.getElementById('sessionId').value),
-            schoolRegNo: document.getElementById('schoolRegNo').value,
             dateOfAdmission: document.getElementById('dateOfAdmission').value,
             admissionType: document.getElementById('admissionType').value,
             admissionScheme: document.getElementById('admissionScheme').value,

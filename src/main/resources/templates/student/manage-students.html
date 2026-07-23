@@ -99,6 +99,9 @@
                     <option value="Class 7">Class 7</option>
                     <option value="Class 8">Class 8</option>
                     <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
                 </select>
             </div>
             <button class="btn-action" onclick="loadClusterDirectory()">Fetch Directory</button>
@@ -108,17 +111,16 @@
             <thead>
             <tr>
                 <th>Roll No</th>
-                <th>Reg. No</th>
                 <th>Student Name</th>
                 <th>Father's Name</th>
                 <th>Contact No</th>
-                <th>Aadhar Number</th>
+                <th>Aadhaar Number</th>
                 <th>Status</th>
                 <th style="text-align: center; width: 240px;">Actions</th>
             </tr>
             </thead>
             <tbody id="directoryTableBody">
-            <tr><td colspan="8" class="no-data">Select filtration criteria and click 'Fetch Directory'.</td></tr>
+            <tr><td colspan="7" class="no-data">Select filtration criteria and click 'Fetch Directory'.</td></tr>
             </tbody>
         </table>
     </div>
@@ -131,11 +133,7 @@
             <div class="form-grid">
                 <div class="input-group">
                     <label for="sessionId">Academic Session *</label>
-                    <select id="sessionId"></select>
-                </div>
-                <div class="input-group">
-                    <label for="schoolRegNo">School Reg. No. *</label>
-                    <input type="text" id="schoolRegNo" required placeholder="e.g. NCS/2026/1001">
+                    <select id="sessionId" required></select>
                 </div>
                 <div class="input-group">
                     <label for="dateOfAdmission">Date of Admission *</label>
@@ -156,6 +154,9 @@
                         <option value="Class 7">Class 7</option>
                         <option value="Class 8">Class 8</option>
                         <option value="Class 9">Class 9</option>
+                        <option value="Class 10">Class 10</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -182,6 +183,7 @@
                         <option value="">None / General</option>
                         <option value="Science">Science</option>
                         <option value="Commerce">Commerce</option>
+                        <option value="Arts">Arts</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -205,6 +207,7 @@
                     <select id="gender" required>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -217,7 +220,7 @@
                 </div>
                 <div class="input-group">
                     <label for="fatherContactNo">Father Contact Number *</label>
-                    <input type="tel" id="fatherContactNo" required placeholder="Primary mobile number">
+                    <input type="tel" id="fatherContactNo" required pattern="[0-9]{10,15}" title="Enter a valid contact number (10-15 digits)" placeholder="Primary mobile number">
                 </div>
                 <div class="input-group">
                     <label for="religion">Religion</label>
@@ -228,6 +231,8 @@
                     <select id="category">
                         <option value="General">General</option>
                         <option value="OBC">OBC</option>
+                        <option value="SC">SC</option>
+                        <option value="ST">ST</option>
                     </select>
                 </div>
 
@@ -249,44 +254,44 @@
             <h3>🛡️ Government Registry Identifiers</h3>
             <div class="form-grid">
                 <div class="input-group">
-                    <label for="studentAadharNo">Student Aadhar No (12 Digits) *</label>
-                    <input type="text" id="studentAadharNo" required pattern="[0-9]{12}" placeholder="Unique Aadhar Card Number">
+                    <label for="studentAadharNo">Student Aadhaar No (12 Digits) *</label>
+                    <input type="text" id="studentAadharNo" required pattern="[0-9]{12}" title="Aadhaar Number must be exactly 12 digits" placeholder="Unique 12-digit Aadhaar Card Number">
                 </div>
                 <div class="input-group">
-                    <label for="studentSssmidNo">Student SSSMID No</label>
-                    <input type="text" id="studentSssmidNo" placeholder="9 digit identifier">
+                    <label for="studentSssmidNo">Student SSSMID No (9 Digits) *</label>
+                    <input type="text" id="studentSssmidNo" required pattern="[0-9]{9}" title="SSSMID must be exactly 9 digits" placeholder="9 digit SSMID number">
                 </div>
                 <div class="input-group">
-                    <label for="childIdNo">Child ID No</label>
-                    <input type="text" id="childIdNo" placeholder="Child tracking number">
+                    <label for="childIdNo">Child ID No (9 Digits) *</label>
+                    <input type="text" id="childIdNo" required pattern="[0-9]{9}" title="Child ID must be exactly 9 digits" placeholder="9 digit child ID">
                 </div>
                 <div class="input-group">
-                    <label for="familyIdNo">Family ID No</label>
-                    <input type="text" id="familyIdNo" placeholder="8 digit family token identifier">
+                    <label for="familyIdNo">Family ID No (8 Digits) *</label>
+                    <input type="text" id="familyIdNo" required pattern="[0-9]{8}" title="Family ID must be exactly 8 digits" placeholder="8 digit family ID">
                 </div>
                 <div class="input-group">
-                    <label for="penNo">PEN No (Permanent Education Number)</label>
-                    <input type="text" id="penNo" placeholder="National registry PEN No">
+                    <label for="penNo">PEN No (11 Alphanumeric) *</label>
+                    <input type="text" id="penNo" required pattern="[A-Za-z0-9]{11}" title="PEN must be an 11-character alphanumeric code" placeholder="11 character PEN Registry value">
                 </div>
                 <div class="input-group">
-                    <label for="apaarIdNo">APAAR ID No</label>
-                    <input type="text" id="apaarIdNo" placeholder="APAAR Card ID Registry number">
+                    <label for="apaarIdNo">APAAR ID No (12 Digits) *</label>
+                    <input type="text" id="apaarIdNo" required pattern="[0-9]{12}" title="APAAR ID must be exactly 12 digits" placeholder="12 digit APAAR ID">
                 </div>
             </div>
 
             <h3>🏦 Bank Framework Details</h3>
             <div class="form-grid">
                 <div class="input-group">
-                    <label for="nameOfBank">Name of Bank</label>
-                    <input type="text" id="nameOfBank" placeholder="e.g. State Bank of India">
+                    <label for="nameOfBank">Name of Bank *</label>
+                    <input type="text" id="nameOfBank" required placeholder="e.g. State Bank of India">
                 </div>
                 <div class="input-group">
-                    <label for="bankAccountNo">Bank Account No</label>
-                    <input type="text" id="bankAccountNo" placeholder="Account identifier string">
+                    <label for="bankAccountNo">Bank Account No *</label>
+                    <input type="text" id="bankAccountNo" required pattern="[0-9]{9,18}" title="Account number must be between 9 and 18 digits" placeholder="9-18 digit account number">
                 </div>
                 <div class="input-group">
-                    <label for="ifscCode">IFSC Code</label>
-                    <input type="text" id="ifscCode" placeholder="e.g. SBIN0001234">
+                    <label for="ifscCode">Bank IFSC Code *</label>
+                    <input type="text" id="ifscCode" required pattern="^[A-Za-z]{4}0[A-Za-z0-9]{6}$" title="Enter a valid 11-character IFSC Code (e.g., SBIN0001234)" placeholder="e.g. SBIN0001234" style="text-transform: uppercase;">
                 </div>
             </div>
 
@@ -386,14 +391,14 @@
 
         if (!sessionId || !currentClass) return;
 
-        tbody.innerHTML = `<tr><td colspan="8" class="no-data">Loading records...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="no-data">Loading records...</td></tr>`;
 
         try {
             const response = await fetch(`/api/students/directory?sessionId=${sessionId}&currentClass=${encodeURIComponent(currentClass)}`);
             if (response.ok) {
                 activeDirectoryMappings = await response.json();
                 if (activeDirectoryMappings.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" class="no-data">No registration clusters found.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="7" class="no-data">No registration clusters found.</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = "";
@@ -425,7 +430,6 @@
                     tbody.innerHTML += `
                         <tr>
                             <td style="font-weight:bold; color:#b32e2e;">${map.rollNumber || 'N/A'}</td>
-                            <td>${map.student.schoolRegNo}</td>
                             <td>
                                 <a href="#" onclick="openProfileModal(${map.student.studentId}); return false;" style="color: #b32e2e; font-weight: 600; text-decoration: underline; cursor: pointer;">
                                     ${map.student.name}
@@ -453,7 +457,7 @@
                 });
             }
         } catch (err) {
-            tbody.innerHTML = `<tr><td colspan="8" class="no-data" style="color:red;">Error parsing data stream.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="no-data" style="color:red;">Error parsing data stream.</td></tr>`;
         }
     }
 
@@ -472,21 +476,28 @@
                 <div class="input-group"><label>Full Name *</label><input type="text" id="editName" value="${s.name || ''}" required></div>
                 <div class="input-group"><label>Father's Name *</label><input type="text" id="editFatherName" value="${s.fatherName || ''}" required></div>
                 <div class="input-group"><label>Mother's Name *</label><input type="text" id="editMotherName" value="${s.motherName || ''}" required></div>
-                <div class="input-group"><label>Primary Contact Mobile *</label><input type="tel" id="editContact" value="${s.fatherContactNo || ''}" required></div>
+                <div class="input-group"><label>Primary Contact Mobile *</label><input type="tel" id="editContact" value="${s.fatherContactNo || ''}" required pattern="[0-9]{10,15}"></div>
                 <div class="input-group"><label>Date of Birth *</label><input type="date" id="editDob" value="${s.dateOfBirth || ''}" required></div>
-                <div class="input-group"><label>Gender *</label><select id="editGender"><option value="Male" ${s.gender==='Male'?'selected':''}>Male</option><option value="Female" ${s.gender==='Female'?'selected':''}>Female</option></select></div>
+                <div class="input-group"><label>Gender *</label><select id="editGender"><option value="Male" ${s.gender==='Male'?'selected':''}>Male</option><option value="Female" ${s.gender==='Female'?'selected':''}>Female</option><option value="Other" ${s.gender==='Other'?'selected':''}>Other</option></select></div>
                 <div class="input-group"><label>Religion</label><input type="text" id="editReligion" value="${s.religion || ''}"></div>
                 <div class="input-group"><label>Social Category</label><input type="text" id="editCategory" value="${s.category || ''}"></div>
-                <div class="input-group"><label>Unique Government Aadhaar Card No *</label><input type="text" id="editAadhar" value="${s.studentAadharNo || ''}" pattern="[0-9]{12}" required></div>
+                <div class="input-group"><label>Aadhaar Card No (12 Digits) *</label><input type="text" id="editAadhar" value="${s.studentAadharNo || ''}" pattern="[0-9]{12}" required></div>
             </div>
 
             <h3>🛡️ Government Trackers & State Ledgers</h3>
             <div class="form-grid">
-                <div class="input-group"><label>SSSMID No</label><input type="text" id="editSssmid" value="${s.studentSssmidNo || ''}"></div>
-                <div class="input-group"><label>Child ID No</label><input type="text" id="editChildId" value="${s.childIdNo || ''}"></div>
-                <div class="input-group"><label>Family ID No</label><input type="text" id="editFamilyId" value="${s.familyIdNo || ''}"></div>
-                <div class="input-group"><label>Permanent Education Number (PEN)</label><input type="text" id="editPen" value="${s.penNo || ''}"></div>
-                <div class="input-group"><label>APAAR Card ID Registry number</label><input type="text" id="editApaar" value="${s.apaarIdNo || ''}"></div>
+                <div class="input-group"><label>SSSMID No (9 Digits) *</label><input type="text" id="editSssmid" value="${s.studentSssmidNo || ''}" pattern="[0-9]{9}" required></div>
+                <div class="input-group"><label>Child ID No (9 Digits) *</label><input type="text" id="editChildId" value="${s.childIdNo || ''}" pattern="[0-9]{9}" required></div>
+                <div class="input-group"><label>Family ID No (8 Digits) *</label><input type="text" id="editFamilyId" value="${s.familyIdNo || ''}" pattern="[0-9]{8}" required></div>
+                <div class="input-group"><label>Permanent Education Number (11 Alphanumeric) *</label><input type="text" id="editPen" value="${s.penNo || ''}" pattern="[A-Za-z0-9]{11}" required></div>
+                <div class="input-group"><label>APAAR Card ID (12 Digits) *</label><input type="text" id="editApaar" value="${s.apaarIdNo || ''}" pattern="[0-9]{12}" required></div>
+            </div>
+
+            <h3>🏦 Bank Framework Details</h3>
+            <div class="form-grid">
+                <div class="input-group"><label>Name of Bank *</label><input type="text" id="editNameOfBank" value="${s.nameOfBank || ''}" required></div>
+                <div class="input-group"><label>Bank Account Number *</label><input type="text" id="editBankAccountNo" value="${s.bankAccountNo || ''}" pattern="[0-9]{9,18}" required></div>
+                <div class="input-group"><label>Bank IFSC Code *</label><input type="text" id="editIfscCode" value="${s.ifscCode || ''}" pattern="^[A-Za-z]{4}0[A-Za-z0-9]{6}$" style="text-transform: uppercase;" required></div>
             </div>
 
             <div class="input-group full-width" style="margin-top: 15px;">
@@ -523,6 +534,9 @@
             familyIdNo: document.getElementById("editFamilyId").value,
             penNo: document.getElementById("editPen").value,
             apaarIdNo: document.getElementById("editApaar").value,
+            nameOfBank: document.getElementById("editNameOfBank").value,
+            bankAccountNo: document.getElementById("editBankAccountNo").value,
+            ifscCode: document.getElementById("editIfscCode").value.toUpperCase(),
             fullAddress: document.getElementById("editAddress").value
         };
 
@@ -553,9 +567,12 @@
         const successAlert = document.getElementById('successAlert');
         errorAlert.style.display = 'none'; successAlert.style.display = 'none';
 
+        // Auto-uppercase IFSC
+        const ifscField = document.getElementById('ifscCode');
+        ifscField.value = ifscField.value.toUpperCase();
+
         const payload = {
             sessionId: parseInt(document.getElementById('sessionId').value),
-            schoolRegNo: document.getElementById('schoolRegNo').value,
             dateOfAdmission: document.getElementById('dateOfAdmission').value,
             admissionType: document.getElementById('admissionType').value,
             admissionScheme: document.getElementById('admissionScheme').value,

@@ -17,9 +17,6 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studentId;
 
-    @Column(name = "school_reg_no", unique = true, nullable = false, length = 50)
-    private String schoolRegNo; // Maps to form's "School Reg. No."
-
     @Column(name = "date_of_admission", nullable = false)
     private LocalDate dateOfAdmission;
 
@@ -67,34 +64,34 @@ public class Student {
     @Column(length = 50)
     private String stream; // Science, Commerce, Arts (for higher classes)
 
-    // --- Government Registry Identifiers ---
-    @Column(name = "child_id_no", length = 50)
-    private String childIdNo;
-
-    @Column(name = "family_id_no", length = 50)
-    private String familyIdNo;
-
-    @Column(name = "student_aadhar_no", unique = true, length = 12)
+    // --- Government Registry Identifiers (Compulsory Fields) ---
+    @Column(name = "student_aadhar_no", unique = true, nullable = false, length = 12)
     private String studentAadharNo;
 
-    @Column(name = "student_sssmid_no", length = 50)
+    @Column(name = "student_sssmid_no", nullable = false, length = 9)
     private String studentSssmidNo;
 
-    @Column(name = "pen_no", length = 50)
+    @Column(name = "child_id_no", nullable = false, length = 9)
+    private String childIdNo;
+
+    @Column(name = "family_id_no", nullable = false, length = 8)
+    private String familyIdNo;
+
+    @Column(name = "pen_no", nullable = false, length = 11)
     private String penNo; // Permanent Education Number
 
-    @Column(name = "apaar_id_no", length = 50)
+    @Column(name = "apaar_id_no", nullable = false, length = 12)
     private String apaarIdNo;
 
-    // --- Bank Framework Details ---
-    @Column(name = "bank_account_no", length = 30)
+    // --- Bank Framework Details (Compulsory Fields) ---
+    @Column(name = "name_of_bank", nullable = false, length = 100)
+    private String nameOfBank;
+
+    @Column(name = "bank_account_no", nullable = false, length = 20)
     private String bankAccountNo;
 
-    @Column(name = "ifsc_code", length = 20)
+    @Column(name = "ifsc_code", nullable = false, length = 11)
     private String ifscCode;
-
-    @Column(name = "name_of_bank", length = 100)
-    private String nameOfBank;
 
     // --- Photograph File Location Pointer ---
     @Column(name = "photo_file_path", length = 512)
@@ -111,6 +108,4 @@ public class Student {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
-
-
 }

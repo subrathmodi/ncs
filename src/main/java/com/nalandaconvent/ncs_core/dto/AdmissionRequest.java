@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Data
 public class AdmissionRequest {
-    private String schoolRegNo;
+//    private String schoolRegNo;
     private LocalDate dateOfAdmission;
     private String admissionType;
     private String admissionScheme;

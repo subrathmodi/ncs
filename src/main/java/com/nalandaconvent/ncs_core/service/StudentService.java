@@ -34,7 +34,7 @@ public class StudentService {
 
         // 2. Build full core profile using user's compliance model properties
         Student student = new Student();
-        student.setSchoolRegNo(request.getSchoolRegNo().trim());
+//        student.setSchoolRegNo(request.getSchoolRegNo().trim());
         student.setDateOfAdmission(request.getDateOfAdmission());
         student.setAdmissionType(request.getAdmissionType());
         student.setAdmissionScheme(request.getAdmissionScheme());
